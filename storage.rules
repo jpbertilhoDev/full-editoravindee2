@@ -1,0 +1,18 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Permitir acesso público de leitura aos avatares
+    match /avatars/{userId} {
+      // Qualquer pessoa pode ler
+      allow read;
+      // Apenas o próprio usuário pode escrever/deletar
+      allow write, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Regra para outras pastas - apenas usuários autenticados podem acessar seus próprios arquivos
+    match /{allPaths=**} {
+      // Leitura/escrita apenas para usuários autenticados (em seus próprios diretórios)
+      allow read, write: if request.auth != null && request.auth.uid == resource.metadata.uid;
+    }
+  }
+} 
