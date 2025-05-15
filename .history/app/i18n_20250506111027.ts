@@ -1,0 +1,113 @@
+'use client';
+
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import HttpBackend from "i18next-http-backend";
+
+// Idiomas suportados pelo DeepL
+export const SUPPORTED_LANGUAGES = {
+  pt: { name: "Português", flag: "🇵🇹", native: true },
+  en: { name: "English", flag: "🇺🇸" },
+  es: { name: "Español", flag: "🇪🇸" },
+  fr: { name: "Français", flag: "🇫🇷" },
+  de: { name: "Deutsch", flag: "🇩🇪" },
+  it: { name: "Italiano", flag: "🇮🇹" },
+  nl: { name: "Nederlands", flag: "🇳🇱" },
+  pl: { name: "Polski", flag: "🇵🇱" },
+  ru: { name: "Русский", flag: "🇷🇺" },
+  ja: { name: "日本語", flag: "🇯🇵" },
+  zh: { name: "中文", flag: "🇨🇳" },
+};
+
+// Converter para array para uso em componentes
+export const LANGUAGES_LIST = Object.entries(SUPPORTED_LANGUAGES).map(
+  ([code, info]) => ({
+    code,
+    ...info,
+  })
+);
+
+// Inicializar i18next com todos os plugins necessários
+i18n
+  .use(HttpBackend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: "pt",
+    supportedLngs: Object.keys(SUPPORTED_LANGUAGES),
+    ns: ["common"],
+    defaultNS: "common",
+    backend: {
+      loadPath: "/locales/{{lng}}/{{ns}}.json",
+      // Adicionar caminho para API de tradução para idiomas não-nativos
+      requestOptions: {
+        cache: "no-store",
+      },
+      // Função para tratar idiomas não-nativos via API
+      allowMultiLoading: false,
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+    react: {
+      useSuspense: false,
+    },
+    detection: {
+      order: ["querystring", "cookie", "localStorage", "navigator"],
+      lookupQuerystring: "lng",
+      lookupCookie: "i18next",
+      lookupLocalStorage: "i18nextLng",
+      caches: ["localStorage", "cookie"],
+    },
+    // Configurações para modo de desenvolvimento
+    debug: process.env.NODE_ENV === "development",
+  });
+
+// Plugin personalizado para tradução automática
+i18n.on("missingKey", (lng, ns, key, value) => {
+  // Se o idioma não for nativo, usar API de tradução
+  if (lng !== "pt" && process.env.NODE_ENV === "production") {
+    // Traduzir automaticamente na próxima requisição
+    console.log(`Missing translation for [${lng}] ${ns}:${key}`);
+  }
+});
+
+// Middleware para verificar tradução via API para idiomas não-nativos
+// Apenas para idiomas não nativos (todos exceto português que tem arquivos estáticos)
+const originalLoadNamespaces = i18n.loadNamespaces;
+i18n.loadNamespaces = async function (ns, callback) {
+  const result = await originalLoadNamespaces.call(i18n, ns, callback);
+
+  // Verificar se precisamos carregar tradução da API
+  const currentLang = i18n.language?.substring(0, 2);
+
+  // Se não for idioma nativo e estiver em produção, usar API
+  if (
+    currentLang &&
+    currentLang !== "pt" &&
+    !SUPPORTED_LANGUAGES[currentLang]?.native &&
+    typeof window !== "undefined"
+  ) {
+    // Carregar traduções via API para todos os namespaces
+    try {
+      const apiPath = `/api/translate?lang=${currentLang}`;
+      const response = await fetch(apiPath);
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // Adicionar traduções ao i18n
+        Object.entries(data).forEach(([namespace, resources]) => {
+          i18n.addResourceBundle(currentLang, namespace, resources, true, true);
+        });
+      }
+    } catch (error) {
+      console.error("Failed to load translations from API:", error);
+    }
+  }
+
+  return result;
+};
+
+export default i18n;

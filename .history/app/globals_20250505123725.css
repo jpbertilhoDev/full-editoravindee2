@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 203 100% 6%;
+    --card: 0 0% 100%;
+    --card-foreground: 203 100% 6%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 203 100% 6%;
+    --primary: 181 92% 34%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 160 98% 65%;
+    --secondary-foreground: 203 100% 6%;
+    --muted: 203 100% 6%;
+    --muted-foreground: 0 0% 93%;
+    --accent: 180 100% 78%;
+    --accent-foreground: 203 100% 6%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 181 92% 34%;
+    --input: 181 92% 34%;
+    --ring: 181 92% 34%;
+    --chart-1: 181 92% 34%;
+    --chart-2: 160 98% 65%;
+    --chart-3: 180 100% 78%;
+    --chart-4: 43 100% 50%;
+    --chart-5: 41 89% 86%;
+    --radius: 0.75rem;
+  }
+  .dark {
+    --background: 203 100% 6%;
+    --foreground: 0 0% 100%;
+    --card: 203 100% 6%;
+    --card-foreground: 0 0% 100%;
+    --popover: 203 100% 6%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 181 92% 34%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 160 98% 65%;
+    --secondary-foreground: 203 100% 6%;
+    --muted: 180 100% 78%;
+    --muted-foreground: 0 0% 100%;
+    --accent: 180 100% 78%;
+    --accent-foreground: 203 100% 6%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 181 92% 34%;
+    --input: 203 100% 6%;
+    --ring: 181 92% 34%;
+    --chart-1: 181 92% 34%;
+    --chart-2: 160 98% 65%;
+    --chart-3: 180 100% 78%;
+    --chart-4: 43 100% 50%;
+    --chart-5: 41 89% 86%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Otimizações de performance e lazy loading */
+.lazy-load {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.lazy-load.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Melhorias para performance de imagens */
+img {
+  content-visibility: auto;
+}
+
+/* Placeholder CSS para animações suaves */
+@keyframes placeholderShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.placeholder {
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeholderShimmer;
+  animation-timing-function: linear;
+  background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+  background-size: 800px 104px;
+  position: relative;
+}

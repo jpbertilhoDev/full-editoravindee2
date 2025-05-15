@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer base {
+  :root {
+    /* Brand colors exactly as in the brand guide */
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 204 100% 6%; /* #00111E */
+    
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 204 100% 6%; /* #00111E */
+    
+    --popover: 0 0% 100%; /* #FFFFFF */
+    --popover-foreground: 204 100% 6%; /* #00111E */
+    
+    /* Azul Petróleo as primary color */
+    --primary: 181 91% 34%; /* #08A4A7 */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* Hortelã as secondary color */
+    --secondary: 161 98% 65%; /* #4DFED1 */
+    --secondary-foreground: 204 100% 6%; /* #00111E */
+    
+    /* Azul Escuro for muted contexts */
+    --muted: 204 100% 6%; /* #00111E */
+    --muted-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* Aqua Claro as accent */
+    --accent: 180 100% 78%; /* #91FFFF */
+    --accent-foreground: 204 100% 6%; /* #00111E */
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 181 91% 34%; /* #08A4A7 */
+    --input: 181 91% 34%; /* #08A4A7 */
+    --ring: 181 91% 34%; /* #08A4A7 */
+    
+    /* Chart colors using exact brand palette */
+    --chart-1: 181 91% 34%; /* Azul Petróleo #08A4A7 */
+    --chart-2: 161 98% 65%; /* Hortelã #4DFED1 */
+    --chart-3: 180 100% 78%; /* Aqua Claro #91FFFF */
+    --chart-4: 50 100% 50%; /* Amarelo Ouro #FFD700 */
+    --chart-5: 41 87% 86%; /* Bege #F9E3BE */
+    
+    --radius: 0.75rem;
+  }
+  .dark {
+    --background: 204 100% 6%; /* #00111E */
+    --foreground: 0 0% 100%; /* #FFFFFF */
+    
+    --card: 204 100% 6%; /* #00111E */
+    --card-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    --popover: 204 100% 6%; /* #00111E */
+    --popover-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* Azul Petróleo as primary - consistent with brand */
+    --primary: 181 91% 34%; /* #08A4A7 */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* Hortelã as secondary */
+    --secondary: 161 98% 65%; /* #4DFED1 */
+    --secondary-foreground: 204 100% 6%; /* #00111E */
+    
+    /* Adjusted for better visibility in dark mode */
+    --muted: 180 100% 78%; /* #91FFFF */
+    --muted-foreground: 0 0% 100%; /* #FFFFFF */
+    
+    /* Aqua Claro as accent */
+    --accent: 180 100% 78%; /* #91FFFF */
+    --accent-foreground: 204 100% 6%; /* #00111E */
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 181 91% 34%; /* #08A4A7 */
+    --input: 204 100% 6%; /* #00111E */
+    --ring: 181 91% 34%; /* #08A4A7 */
+    
+    /* Chart colors for dark mode - using exact brand colors */
+    --chart-1: 181 91% 34%; /* Azul Petróleo #08A4A7 */
+    --chart-2: 161 98% 65%; /* Hortelã #4DFED1 */
+    --chart-3: 180 100% 78%; /* Aqua Claro #91FFFF */
+    --chart-4: 50 100% 50%; /* Amarelo Ouro #FFD700 */
+    --chart-5: 41 87% 86%; /* Bege #F9E3BE */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Otimizações de performance e lazy loading */
+.lazy-load {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.lazy-load.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Melhorias para performance de imagens */
+img {
+  content-visibility: auto;
+}
+
+/* Placeholder CSS para animações suaves */
+@keyframes placeholderShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.placeholder {
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeholderShimmer;
+  animation-timing-function: linear;
+  background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+  background-size: 800px 104px;
+  position: relative;
+}
