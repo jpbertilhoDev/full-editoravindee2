@@ -11,11 +11,6 @@ const nextConfig = {
     // Only run ESLint during development, ignore during production builds
     ignoreDuringBuilds: true,
   },
-  // Disable TypeScript checking during builds for production
-  typescript: {
-    // Only run TypeScript checking during development, ignore during production builds
-    ignoreBuildErrors: true,
-  },
   images: {
     domains: [
       "firebasestorage.googleapis.com",
